@@ -1,0 +1,144 @@
+/* 
+  banner.strings
+  AGCircularScrollView
+
+  Created by 吴书敏 on 16/2/24.
+  Copyright © 2016年 littledogboy. All rights reserved.
+*/
+
+// banner接口1：
+// http://app.bilibili.com/x/banner/ver?ver=ios4/ver.ios4.@2x.phone
+/*
+{
+    "bangumi": {
+        "url": "http://app.bilibili.com/promo/ios4/2626/bangumi.ios4.@2x.phone.json",
+        "ver": "2626"
+    },
+    "banner": {
+        "url": "http://app.bilibili.com/promo/ios4/3558/banner.ios4.@2x.phone.json",
+        "ver": “1456301867" // 时间戳
+    },
+    "code": 0,
+    "game": {
+        "url": "http://app.bilibili.com/promo/ios4/1000/game.ios4.@2x.phone.json",
+        "ver": "1000"
+    },
+    "it": {
+        "rv": "1510"
+    }
+}
+
+
+// 2. Type 接口
+// http://app.bilibili.com/promo/ios4/3558/banner.ios4.@2x.phone.json
+
+{
+    "code": 0,
+    "count": 4,
+    "list": [
+    {
+        "height": 200,
+        "imagekey": "c646c2befdc5cb7c05b72de5",
+        "imageurl": "http://i0.hdslb.com/group1/M00/C2/F4/oYYBAFbAYd-AF9ZmAAJLPxNI-OY171.jpg_640x200.jpg",
+        "remark": "",
+        "remark2": "",
+        "style": "banner",
+        "title": "prpr",
+        "type": "weblink",
+        "weburl": "http://www.bilibili.com/html/punipuni2.html",
+        "width": 640
+    },
+    {
+        "height": 200,
+        "imagekey": "110185bac4a8e7717954d3a1",
+        "imageurl": "http://x-img.hdslb.net/group1/M00/78/15/oYYBAFaQSiGAGrQuAAIU2C-3B1s610.jpg_640x200.jpg",
+        "remark": "",
+        "remark2": "",
+        "style": "banner",
+        "title": "mc",
+        "type": "weblink",
+        "weburl": "http://www.bilibili.com/html/MCbattle.html",
+        "width": 640
+    },
+    {
+        "height": 200,
+        "imagekey": "5680195297413712bd2f60ca",
+        "imageurl": "http://x-img.hdslb.net/group1/M00/8E/8C/oYYBAFaTjMGAJYt_AAE3Iy37rbE290.jpg_640x200.jpg",
+        "remark": "",
+        "remark2": "",
+        "spid": 46147,
+        "spname": "苍之彼方的四重奏",
+        "style": "banner",
+        "title": "苍之彼方的四重奏",
+        "type": "bangumi",
+        "width": 640
+    },
+    {
+        "height": 200,
+        "imagekey": "b66fab1bf63c25734d382f8e",
+        "imageurl": "http://x-img.hdslb.net/group1/M00/8E/81/oYYBAFaTiz-AVSyAAAJSED6sdg4439.jpg_640x200.jpg",
+        "remark": "",
+        "remark2": "",
+        "spid": 61445,
+        "spname": "赤发白雪姬",
+        "style": "banner",
+        "title": "赤发白雪姬",
+        "type": "bangumi",
+        "width": 640
+    }
+    ],
+    "screen": "2__",
+    "ver": "0"
+}
+
+
+// 3. banner 的 真正接口：
+// http://app.bilibili.com/x/banner?build=2530&channel=appstore&plat=2
+{
+    "code": 0,
+    "data": [
+    {
+        "image": "http://i0.hdslb.com/group1/M00/C2/F4/oYYBAFbAYd-AF9ZmAAJLPxNI-OY171.jpg",
+        "remark": "",
+        "title": "prpr",
+        "type": 2,
+        "value": "http://www.bilibili.com/html/punipuni2.html",
+        "weight": 100
+    },
+    {
+        "image": "http://x-img.hdslb.net/group1/M00/78/15/oYYBAFaQSiGAGrQuAAIU2C-3B1s610.jpg",
+        "remark": "",
+        "title": "mc",
+        "type": 2,
+        "value": "http://www.bilibili.com/html/MCbattle.html",
+        "weight": 70
+    },
+    {
+        "image": "http://x-img.hdslb.net/group1/M00/8E/8C/oYYBAFaTjMGAJYt_AAE3Iy37rbE290.jpg",
+        "remark": "",
+        "title": "苍之彼方的四重奏",
+        "type": 3,
+        "value": "3106",
+        "weight": 10
+    },
+    {
+        "image": "http://x-img.hdslb.net/group1/M00/8E/81/oYYBAFaTiz-AVSyAAAJSED6sdg4439.jpg",
+        "remark": "",
+        "title": "赤发白雪姬",
+        "type": 3,
+        "value": "3107",
+        "weight": 9
+    }
+    ]
+}
+
+// 点击banner进入到banner详情页面接口：
+// 参数 season_id 需要时间戳ts  需要type
+// http://bangumi.bilibili.com/api/season?access_key=037f2b4508121fc5c87b6bbbc05d8273&actionKey=appkey&appkey=27eb53fc9058f8c3&build=2530&device=phone&platform=ios&season_id=3107&sign=7df712b9b435907ed34a0fa3640a3fc8&ts=1456301931&type=bangumi
+
+*/
+
+
+
+
+

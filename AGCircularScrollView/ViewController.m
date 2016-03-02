@@ -81,10 +81,10 @@
 {
     // 1. 判断bannerImage的type
     switch (bannerImage.type) {
-        case weblink:
+        case weblink: // 2
         {
             AGWebViewController *webVC = [[AGWebViewController alloc] init];
-            webVC.urlString = bannerImage.value;
+            webVC.bannerImage = bannerImage;
             [self.navigationController pushViewController:webVC animated:YES];
         }
             break;

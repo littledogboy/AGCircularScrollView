@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+@class BannerImage;
 
 @interface AGWebViewController : UIViewController
 
-@property (nonatomic, copy) NSString *urlString;
+@property (nonatomic, strong) BannerImage *bannerImage;
 
 @end

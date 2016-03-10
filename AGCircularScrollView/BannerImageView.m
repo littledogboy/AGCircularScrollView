@@ -31,6 +31,7 @@
     _bannerImage = bannerImage;
     
     [self sd_setImageWithURL:[NSURL URLWithString:bannerImage.image] placeholderImage:[UIImage imageNamed:@""]]; // 设置图片
+    
 }
 
 
@@ -40,6 +41,9 @@
     // 把被点击图片的信息传递过去
     if (_delegate && [_delegate respondsToSelector:@selector(pushViewControllerWithBannerImage:)]) {
         [_delegate pushViewControllerWithBannerImage:self.bannerImage];
+        
+        // 停止计时器
+        
     }
 }
 

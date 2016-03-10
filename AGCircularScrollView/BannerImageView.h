@@ -14,6 +14,9 @@
 
 - (void)pushViewControllerWithBannerImage:(BannerImage *)bannerImage;
 
+@optional
+- (void)popViewController;
+
 @end
 
 

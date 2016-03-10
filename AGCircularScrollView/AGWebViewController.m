@@ -36,8 +36,8 @@
 //    self.automaticallyAdjustsScrollViewInsets = NO;
     
     // 判断是url链接还是 iosURL连接.http://acg.tv/u11R
-    if ([self.bannerImage.title containsString:@"-ios"]) {
-       // 如果是title的名字中有-ios说明是AppStore的url链接，则进入到AppStore
+    if ([self.bannerImage.value containsString:@"acg.tv"]) {
+       // 如果是value 的名字中有acg.tv说明是AppStore的url链接，则进入到AppStore
         [self openURL];
         
     } else { // 否则进入相关网页
@@ -87,6 +87,7 @@
     });
 }
 
+
 #pragma mark-
 #pragma mark 正则表达式处理
 - (NSString *)regulaerExpression:(NSString *)expression forMatchString:(NSString *)matchString
@@ -100,9 +101,10 @@
     // 2. error
     NSError *error = NULL;
     // 3. 表达式对象
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:expression options:NSRegularExpressionCaseInsensitive error:&error];
-    // 返回结果
-        NSTextCheckingResult *result = [regex firstMatchInString:searchText options:0 range:NSMakeRange(0, [searchText length])];
+    // 创建方式有两种。 1. 实例方法 和 类方法
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:expression options:NSRegularExpressionCaseInsensitive error:&error]; // 不区分大小写
+    // 获取匹配结果
+    NSTextCheckingResult *result = [regex firstMatchInString:searchText options:0 range:NSMakeRange(0, [searchText length])];
     // 如果匹配到则截取，替换
         if (result) {
             NSString *matchString = [searchText substringWithRange:result.range];
@@ -116,6 +118,12 @@
     }
 }
 
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    NSLog(@"%@ %d", self.navigationController.topViewController, __LINE__);
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -123,7 +131,6 @@
 
 /*
 #pragma mark - Navigation
-
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].

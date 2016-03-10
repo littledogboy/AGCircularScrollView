@@ -8,14 +8,21 @@
 
 #define  kTotalWidth  self.frame.size.width
 #define  kTotalHeight  self.frame.size.height
+#define  kScrollInterval 4
 
 
 #import "AGCircularScrollView.h"
 #import "BannerImage.h"
+#import "AGWebViewController.h"
+
+#import "ViewController.h"
+
 @interface AGCircularScrollView () <UIScrollViewDelegate>
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIPageControl *pageControl;
+
+@property (nonatomic, strong) NSTimer *timer;
 
 @end
 
@@ -34,6 +41,15 @@
 }
 
 
+//重写代理方法，添加观察者
+- (void)setDelegate:(id<BannerImageViewDelegate>)delegate
+{
+    _delegate = delegate;
+    [self addObserver];
+}
+
+
+
 #pragma mark-
 #pragma mark 添加scrollView
 - (void)addScrollView
@@ -45,6 +61,7 @@
     _scrollView.delegate = self; // 设置滚动代理
     [self addSubview:self.scrollView];
 }
+
 
 - (void)updateScrollView
 {
@@ -71,7 +88,11 @@
         }
     }
     
+    // 添加自动滚动
+    [self addTimer];
+    
 }
+
 
 #pragma mark-
 #pragma mark 添加pageControl
@@ -101,7 +122,7 @@
 
 
 #pragma mark-
-#pragma mark scrollViewDelegate
+#pragma mark scrollViewDelegate 停止开始计时器
 
 // 滚动
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -118,14 +139,40 @@
     } else if (offSetX < minOffSetX) { // 左循环滚动
         [scrollView setContentOffset:(CGPointMake(maxOffSetX, 0)) animated:NO];
     }
-    
 }
+
+// 开始拖拽，停止计时器
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    // 停止计时器
+    [self stopTimer];
+}
+
+
+
+#pragma mark-
+#pragma mark 滚动更改pageControl
 
 // 手动滚动停止，更改pageControl
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    [self changePageControl];
+    
+    // 手动滚动停止，恢复计时器
+    [self resumeTimer];
+}
+
+// 滚动动画停止，非手动滑动
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    [self changePageControl];
+}
+
+// 根据scroll偏移量更改pageControl
+- (void)changePageControl
+{
     // 当前偏移量
-    CGFloat offSetX = scrollView.contentOffset.x;
+    CGFloat offSetX = self.scrollView.contentOffset.x;
     
     NSInteger index = self.bannerImageModel.count;
     if (offSetX > 0) {
@@ -137,7 +184,62 @@
 
 
 #pragma mark-
-#pragma mark 自动滚动
+#pragma mark 添加自动滚动
+- (void)addTimer
+{
+    // 添加计时器，并添加到当前线程
+    self.timer = [NSTimer timerWithTimeInterval:kScrollInterval target:self selector:@selector(timerFireMethod:) userInfo:nil repeats:YES];
+    // 获取到当前线程的runloop ，添加定时器. defaultrunloopMode 会在UI滚动时，比如UIScrollView的拖动操作，会将Run Loop切换成NSEventTrackingRunLoopMode模式，在这个过程中，默认的NSDefaultRunLoopMode模式中注册的事件是不会被执行的。
+    [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSDefaultRunLoopMode];
+}
+
+// 自动滚动
+- (void)timerFireMethod:(NSTimer *)timer
+{
+    // 当前偏移量
+    CGFloat offSetX = self.scrollView.contentOffset.x;
+    
+    CGFloat maxOffSetX = self.scrollView.contentSize.width - kTotalWidth;
+    CGFloat minOffSetX = 0;
+    
+    // 如果已经是最大偏移，则定到最小偏移，然后再滚动
+    if (offSetX >= maxOffSetX) {
+        [self.scrollView setContentOffset:(CGPointMake(minOffSetX, 0)) animated:NO];
+        [self.scrollView setContentOffset:(CGPointMake(kTotalWidth, 0)) animated:YES];
+    } else {
+         [self.scrollView setContentOffset:(CGPointMake(offSetX + kTotalWidth, 0)) animated:YES];
+    }
+}
+
+// 恢复计时器
+- (void)resumeTimer
+{
+    [self.timer setFireDate:[NSDate dateWithTimeIntervalSinceNow:kScrollInterval]];
+}
+
+
+// 停止计时器
+- (void)stopTimer
+{
+    [self.timer setFireDate:[NSDate distantFuture]]; // 创建一个很大的日期，可以认为永远不会被执行
+}
+
+
+
+
+#pragma mark-
+#pragma mark 进入下级页面时，停止定时器，返回时，开始定时器。
+// 使用 kvo 设计模式
+- (void)addObserver
+{
+
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
+{
+    
+}
+
 
 /*
 // Only override drawRect: if you perform custom drawing.

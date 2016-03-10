@@ -27,6 +27,12 @@
 // 图片代理
 @property (nonatomic, assign) id<BannerImageViewDelegate> delegate;
 
+// 停止滚动
+- (void)stopTimer;
+
+// 恢复滚动
+- (void)resumeTimer;
+
 
 
 

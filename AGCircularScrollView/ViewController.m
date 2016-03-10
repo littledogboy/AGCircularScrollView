@@ -18,6 +18,10 @@
 
 @property (nonatomic, strong) NSMutableArray *bannerImageArray;
 
+@property (nonatomic, strong) AGCircularScrollView *bannerView;
+
+//@property (nonatomic, strong) UIViewController *visibleViewController;
+
 @end
 
 @implementation ViewController
@@ -25,14 +29,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    // test1
+    self.visibleViewController = self.navigationController.visibleViewController;
+    
     self.automaticallyAdjustsScrollViewInsets = NO;
     
-    AGCircularScrollView *bannerView = [[AGCircularScrollView alloc] initWithFrame:(CGRectMake(0, 64, 375, 117))];
-    bannerView.delegate = self;
+    self.bannerView = [[AGCircularScrollView alloc] initWithFrame:(CGRectMake(0, 64, 375, 117))];
+    _bannerView.delegate = self;
     
-    bannerView.backgroundColor = [UIColor redColor];
+    _bannerView.backgroundColor = [UIColor redColor];
     
-    [self.view addSubview:bannerView];
+    [self.view addSubview:_bannerView];
     
     // 请求成功后进行数据，返回数据为responseObject
     // 1UL << 0  0b0000 0001  无符号长整形 左移0位
@@ -63,10 +70,9 @@
         }
         
         // 2. 给bannerView 赋值
-        bannerView.bannerImageModel = self.bannerImageArray;
+        _bannerView.bannerImageModel = self.bannerImageArray;
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
     }];
-
     
     // Do any additional setup after loading the view, typically from a nib.
 }
@@ -81,7 +87,7 @@
 {
     // 1. 判断bannerImage的type
     switch (bannerImage.type) {
-        case weblink: // 2
+        case weblink: // 2 网页链接
         {
             AGWebViewController *webVC = [[AGWebViewController alloc] init];
             webVC.bannerImage = bannerImage;
@@ -89,7 +95,7 @@
         }
             break;
         
-        case bangumi:
+        case bangumi: // 3 番剧
         {
             
         }
@@ -100,6 +106,22 @@
     }
     
 }
+
+
+// 每次要显示到屏幕上的时候都会执行，比如进入第二级页面，再返回到当前页面。
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self.bannerView resumeTimer];
+//    NSLog(@"%@ %d",self.navigationController.topViewController, __LINE__);
+
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self.bannerView stopTimer];
+//    NSLog(@"%@ %d",self.navigationController.topViewController, __LINE__);
+}
+
 
 
 - (void)didReceiveMemoryWarning {
